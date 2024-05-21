@@ -14,18 +14,18 @@ import axios from 'axios'
 // }
 
 
-export const fetchData = async () => {
+export const getAllTasks = async () => {
     try {
         const res = await axios.get('http://localhost:8000/tasks/api/v1/tasks/', {
             withCredentials: false,
             headers: {
                 'Content-Type': 'application/json',
             },
-        })
-        console.log(res.data)
+        });
+        console.log(res.data);
+        return res;  // Return the response
     } catch (error) {
-        console.error('Error fetching tasks: ', error)
+        console.error('Error fetching tasks: ', error);
+        return null;  // Return null or throw an error to handle it in the calling function
     }
 }
-
-fetchData()
