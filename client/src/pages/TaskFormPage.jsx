@@ -1,21 +1,38 @@
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form'
-import { createTask, deleteTask } from '../api/tasks.api'
+import { createTask, deleteTask, updateTask, getTask } from '../api/tasks.api'
 import { useNavigate, useParams } from 'react-router-dom'
 
 export function TaskFormPage() {
 
-    const { register, handleSubmit, formState: {
+    const { register, handleSubmit, setValue, formState: {
         errors
     } } = useForm();
 
     const navigate = useNavigate();
     const params = useParams();
-    console.log(params)
 
     const onSubmit = handleSubmit(async (data) => {
-        await createTask(data)
+        if (params.id) {
+            updateTask(params.id, data)
+        } else {
+            console.log('creating')
+            await createTask(data);
+        }
         navigate("/tasks");
     })
+
+    useEffect(() => {
+        async function loadTask() {
+            if (params.id) {
+                const { data } = await getTask(params.id)
+                setValue('title', data.title)
+                setValue('description', data.description)
+            }
+        }
+        loadTask();
+    }, []);
+
     return (
         <div>
             <form onSubmit={onSubmit}>
@@ -23,7 +40,7 @@ export function TaskFormPage() {
                 {errors.title && <span>this field is required</span>}
                 <textarea rows="3" placeholder="description" {...register("description", { required: true })}></textarea>
                 {errors.description && <span>this field is required</span>}
-                <button type="submit">Create</button>
+                <button type="submit">Save</button>
             </form>
 
             {params.id && <button onClick={async () => {
