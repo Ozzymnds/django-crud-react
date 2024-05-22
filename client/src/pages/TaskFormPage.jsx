@@ -18,7 +18,7 @@ export function TaskFormPage() {
             updateTask(params.id, data)
             toast.success('Task updated', {
                 duration: 3000,
-                position: 'top-right',
+                position: 'bottom-right',
                 style: {
                     background: 'blue',
                     color: 'black'
@@ -29,7 +29,7 @@ export function TaskFormPage() {
             await createTask(data);
             toast.success('Task created', {
                 duration: 3000,
-                position: 'top-right',
+                position: 'bottom-right',
                 style: {
                     background: 'green',
                     color: 'black'
@@ -57,13 +57,30 @@ export function TaskFormPage() {
                     placeholder="title"
                     {...register("title", { required: true })}
                     className='bg-zinc-700 p-3 rounded-lg block w-full mb3' />
-                {errors.title && <span>this field is required</span>}
+                {errors.title && toast.error('this field is required', {
+                    duration: 3000,
+                    position: 'bottom-right',
+                    style: {
+                        background: 'red',
+                        color: 'black'
+                    }
+                }
+
+                )}
                 <textarea rows="3"
                     placeholder="description"
                     {...register("description",
                         { required: true })}
                     className='bg-zinc-700 p-3 rounded-lg block w-full mb3'></textarea>
-                {errors.description && <span>this field is required</span>}
+                {errors.description && toast.error('this field is required', {
+                    duration: 3000,
+                    position: 'bottom-right',
+                    style: {
+                        background: 'red',
+                        color: 'black'
+                    }
+                }
+                )}
                 <button className='bg-indigo-500 p-3 rounded-lg block w-full mt-3' type="submit">Save</button>
             </form>
 
@@ -76,7 +93,7 @@ export function TaskFormPage() {
                             navigate("/tasks");
                             toast.success('Task deleted', {
                                 duration: 3000,
-                                position: 'top-right',
+                                position: 'bottom-right',
                                 style: {
                                     background: 'red',
                                     color: 'black'
